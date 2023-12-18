@@ -1,15 +1,13 @@
 <script>
-  import { onMount } from "svelte";
-
   let use;
-  onMount(async () => {
-    await fetch("https://dummyjson.com/products/1")
+  const run = async () =>
+    await fetch("http://127.0.0.1:3000")
       .then((res) => res.json())
       .then((data) => {
         use = data;
         console.log(use);
       });
-  });
+  run();
 </script>
 
 <h1>Welcome to SvelteKit</h1>
@@ -18,8 +16,7 @@
 </p>
 <div>
   {#if use !== undefined}
-    {use?.brand}<br />
-    {use?.title}<br />
-    <img src={use?.images[0]} alt={use?.title} />
+    {use?.age}<br />
+    {use?.name}<br />
   {/if}
 </div>
