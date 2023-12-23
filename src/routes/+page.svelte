@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   let todos;
   onMount(() => {
-    fetch("https://www.example.com")
+    fetch("http://127.0.0.1:3000")
       .then((res) => res.json())
       .then((data) => (todos = data))
       .catch((err) => {
