@@ -20,12 +20,13 @@
 <div class="todos font-sans text-lg font-normal">
   {#each todos as todo, i (i)}
     <div class="todo">
-      <label
+      <input
         for="checked"
         id="check"
         type="text"
-        class={`${todo.done ? "line-through" : ""}`}>{todo.text}</label
-      >
+        class={`${todo.done ? "line-through" : ""}`}
+        value={todo.text}
+      />
       <input
         type="checkbox"
         name="checked"
