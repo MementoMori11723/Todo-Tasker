@@ -2,7 +2,7 @@
     let loginSwitch = false;
 </script>
 
-<button on:click={ () => loginSwitch = true }>{loginSwitch ? "Logout" : "Login"}</button>
+<button on:click={ () => loginSwitch = !loginSwitch }>{loginSwitch ? "Logout" : "Login"}</button>
 
 {#if loginSwitch}
     <h1>Logged in!</h1>
