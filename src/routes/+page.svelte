@@ -13,8 +13,8 @@
   <h1>Logged in!</h1>
   <div>
     {#each tasks as task (task.id)}
-      <input type="checkbox" name={`${task.id}`} >
-      <label for={`${task.id}`}>{task.name}</label><br/>
+    <p>{task.name}</p>
+    <button>Done</button><br/>
     {/each}
   </div>
 {:else}
