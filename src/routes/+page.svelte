@@ -1,6 +1,7 @@
 <script>
   let loginSwitch = false;
   let tasks = [{id:1,name:"task-1"},{id:2,name:"task-2"},{id:3,name:"task-3"}]
+  let saveState = false
 </script>
 
 <button on:click={() => (loginSwitch = !loginSwitch)}
