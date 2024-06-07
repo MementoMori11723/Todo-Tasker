@@ -1,6 +1,7 @@
 <script>
   let loginSwitch = false;
   let tasks = [{id:1,name:"task-1"},{id:2,name:"task-2"},{id:3,name:"task-3"}]
+  let lineThrough = false;
 </script>
 
 <button on:click={() => {
@@ -13,8 +14,10 @@
   <h1>Logged in!</h1>
   <div>
     {#each tasks as task (task.id)}
-    <p>{task.name}</p>
-    <button>Done</button><br/>
+    <p>
+      {task.name}
+      <button on:click={() => lineThrough = !lineThrough}>Done</button>
+    </p>
     {/each}
   </div>
 {:else}
