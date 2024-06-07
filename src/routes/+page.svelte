@@ -1,7 +1,10 @@
 <script>
+  import "../app.css"
+
   let loginSwitch = false;
   let tasks = [{id:1,name:"task-1"},{id:2,name:"task-2"},{id:3,name:"task-3"}]
   let lineThrough = false;
+  let spanId;
 </script>
 
 <button on:click={() => {
@@ -15,8 +18,11 @@
   <div>
     {#each tasks as task (task.id)}
     <p>
-      <span style="text-decoration-line: line-through">{task.name}</span>
-      <button on:click={() => lineThrough = !lineThrough}>Done</button>
+      <span id={`${task.id}`} class="line-through">{task.name}</span>
+      <button on:click={() => { 
+        lineThrough = !lineThrough
+        spanId = task.id 
+        }}>Done</button>
     </p>
     {/each}
   </div>
