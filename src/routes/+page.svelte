@@ -18,7 +18,7 @@
   <div>
     {#each tasks as task (task.id)}
     <p>
-      <span id={`${task.id}`} class="line-through">{task.name}</span>
+      <span id={`${task.id}`} class={lineThrough ? "line-through" : ""}>{task.name}</span>
       <button on:click={() => { 
         lineThrough = !lineThrough
         spanId = task.id 
