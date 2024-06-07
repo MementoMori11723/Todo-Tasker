@@ -2,9 +2,19 @@
   import "../app.css"
 
   let loginSwitch = false;
-  let tasks = [{id:1,name:"task-1"},{id:2,name:"task-2"},{id:3,name:"task-3"}]
-  let lineThrough = false;
-  let spanId;
+  let tasks = [{
+      id:1,
+      name:"task-1",
+      lineThrough:false
+    },{
+      id:2,
+      name:"task-2",
+      lineThrough:false
+    },{
+      id:3,
+      name:"task-3",
+      lineThrough:false
+    }]
 </script>
 
 <button on:click={() => {
@@ -17,12 +27,11 @@
   <h1>Logged in!</h1>
   <div>
     {#each tasks as task (task.id)}
-    <p>
-      <span id={`${task.id}`} class={lineThrough ? "line-through" : ""}>{task.name}</span>
+    <p class={task.lineThrough ? "line-through" : ""}>
+      {task.name}
       <button on:click={() => { 
-        lineThrough = !lineThrough
-        spanId = task.id 
-        }}>Done</button>
+        task.lineThrough = !task.lineThrough
+      }}>Done</button>
     </p>
     {/each}
   </div>
