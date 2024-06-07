@@ -5,14 +5,17 @@
   let tasks = [{
       id:1,
       name:"task-1",
+      description:"",
       lineThrough:false
     },{
       id:2,
       name:"task-2",
+      description:"",
       lineThrough:false
     },{
       id:3,
       name:"task-3",
+      description:"",
       lineThrough:false
     }]
 </script>
