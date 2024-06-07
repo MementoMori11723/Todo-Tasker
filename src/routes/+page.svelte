@@ -28,7 +28,9 @@
   <div>
     {#each tasks as task (task.id)}
     <p class={task.lineThrough ? "line-through" : ""}>
-      {task.name}
+      <button on:click={() => alert(task.name)}>
+        {task.name}
+      </button>
       <button on:click={() => { 
         task.lineThrough = !task.lineThrough
       }}>Done</button>
