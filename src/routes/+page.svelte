@@ -15,7 +15,7 @@
   <div>
     {#each tasks as task (task.id)}
     <p>
-      {task.name}
+      <span style="text-decoration-line: line-through">{task.name}</span>
       <button on:click={() => lineThrough = !lineThrough}>Done</button>
     </p>
     {/each}
