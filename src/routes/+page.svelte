@@ -2,11 +2,14 @@
   import { onMount } from "svelte";
   import "../app.css";
 
+  let loginSwitch = false;
   onMount(() => {
-    console.log(`Session Storage: ${sessionStorage.getItem("name")}`);
+    sessionStorage.getItem("name")
+      ? (loginSwitch = true)
+      : (loginSwitch = false);
+    console.log("loginSwitch", loginSwitch);
   });
 
-  let loginSwitch = false;
   let tasks = [
     {
       id: 1,
