@@ -2,7 +2,9 @@
   import { onMount } from "svelte";
   import "../app.css";
 
-  onMount(() => console.log("Page mounted"));
+  onMount(() => {
+    console.log(`Session Storage: ${sessionStorage.getItem("name")}`);
+  });
 
   let loginSwitch = false;
   let tasks = [
@@ -30,6 +32,7 @@
 <button
   on:click={() => {
     loginSwitch = !loginSwitch;
+    sessionStorage.setItem("name", "SvelteKit");
   }}>{loginSwitch ? "Logout" : "Login"}</button
 >
 
