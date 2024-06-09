@@ -8,7 +8,7 @@
       ? (loginSwitch = true)
       : (loginSwitch = false);
     console.log("loginSwitch", loginSwitch);
-    fetch("/")
+    fetch("/api")
       .then((res) => res.json())
       .then((data) => console.log(data));
   });
