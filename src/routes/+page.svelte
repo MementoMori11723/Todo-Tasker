@@ -10,7 +10,7 @@
     console.log("loginSwitch", loginSwitch);
     fetch("/api")
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => console.log(data.message));
   });
 
   let tasks = [
