@@ -8,6 +8,9 @@
       ? (loginSwitch = true)
       : (loginSwitch = false);
     console.log("loginSwitch", loginSwitch);
+    fetch("/")
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   });
 
   let tasks = [
@@ -35,7 +38,9 @@
 <button
   on:click={() => {
     loginSwitch = !loginSwitch;
-    sessionStorage.setItem("name", "SvelteKit");
+    loginSwitch
+      ? sessionStorage.setItem("name", "SvelteKit")
+      : sessionStorage.removeItem("name");
   }}>{loginSwitch ? "Logout" : "Login"}</button
 >
 
