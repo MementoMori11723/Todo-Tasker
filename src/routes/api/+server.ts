@@ -1,3 +1,5 @@
 import { json } from "@sveltejs/kit";
 
-export function GET() {}
+export function GET() {
+  return json({ message: "Hello world!" });
+}
