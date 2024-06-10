@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import type { PageData } from "./$types";
+  import Login from "./login.svelte";
+  import { onMount } from "svelte";
   import "../app.css";
 
   export let data: PageData;
@@ -22,27 +23,15 @@
   };
 </script>
 
-<button on:click={login}>{loginSwitch ? "Logout" : "Login"}</button>
-
-<a href="/about" style="margin: 10px;">About</a>
-
-{#if loginSwitch}
-  <h1>Logged in!</h1>
-  <div>
-    {#each tasks as task (task.id)}
-      <p class={task.lineThrough ? "line-through" : ""}>
-        <button on:click={() => alert(task.description)}>
-          {task.name}
-        </button>
-        <button on:click={() => (task.lineThrough = !task.lineThrough)}
-          >Done</button
-        >
-      </p>
-    {/each}
-  </div>
-{:else}
-  <h1>Welcome to SvelteKit</h1>
-  <p>
-    Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
-  </p>
-{/if}
+<main>
+  <button on:click={login}>{loginSwitch ? "Logout" : "Login"}</button>
+  <a href="/about" style="margin: 10px;">About</a>
+  {#if loginSwitch}
+    <Login {tasks} />
+  {:else}
+    <h1>Welcome to SvelteKit</h1>
+    <p>
+      Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
+    </p>
+  {/if}
+</main>
