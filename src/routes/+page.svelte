@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PageData } from "./$types";
-  import Navbar from "./navbar.svelte";
-  import Login from "./login.svelte";
+  import Navbar from "$lib/components/navbar.svelte";
+  import Login from "$lib/components/login.svelte";
   import { onMount } from "svelte";
   import "../app.css";
 
@@ -9,6 +9,13 @@
   $: console.log(data);
   let loginSwitch = false;
   let tasks = data.tasks;
+
+  const login = () => {
+    loginSwitch = !loginSwitch;
+    loginSwitch
+      ? sessionStorage.setItem("name", "SvelteKit")
+      : sessionStorage.removeItem("name");
+  };
 
   onMount(() => {
     sessionStorage.getItem("name")
@@ -18,7 +25,7 @@
 </script>
 
 <main>
-  <Navbar {loginSwitch} />
+  <Navbar {loginSwitch} {login} />
   {#if loginSwitch}
     <Login {tasks} />
   {:else}

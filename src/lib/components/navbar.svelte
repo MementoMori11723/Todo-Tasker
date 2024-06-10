@@ -1,11 +1,6 @@
 <script lang="ts">
   export let loginSwitch: boolean;
-  const login = () => {
-    loginSwitch = !loginSwitch;
-    loginSwitch
-      ? sessionStorage.setItem("name", "SvelteKit")
-      : sessionStorage.removeItem("name");
-  };
+  export let login: () => void;
 </script>
 
 <button on:click={login}>{loginSwitch ? "Logout" : "Login"}</button>
