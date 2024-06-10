@@ -3,8 +3,8 @@
   import type { PageData } from "./$types";
   import "../app.css";
 
-  export let test: PageData;
-  console.log(test);
+  export let data: PageData;
+  $: console.log(data);
   let loginSwitch = false;
   let tasks = [
     {
