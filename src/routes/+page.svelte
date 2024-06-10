@@ -2,15 +2,30 @@
   import { onMount } from "svelte";
   import "../app.css";
 
+  type Task = {
+    id: number;
+    name: string;
+    description: string;
+    lineThrough: boolean;
+  };
+
   let loginSwitch = false;
+  let tasks: Task[];
+
+  async function getTasks() {
+    await fetch("/api")
+      .then((res) => res.json())
+      .then((data) => {
+        tasks = data;
+      });
+  }
+
   onMount(() => {
     sessionStorage.getItem("name")
       ? (loginSwitch = true)
       : (loginSwitch = false);
-    console.log("loginSwitch", loginSwitch);
+    getTasks();
   });
-
-  export let tasks;
 </script>
 
 <button
@@ -19,6 +34,7 @@
     loginSwitch
       ? sessionStorage.setItem("name", "SvelteKit")
       : sessionStorage.removeItem("name");
+    getTasks();
   }}>{loginSwitch ? "Logout" : "Login"}</button
 >
 
