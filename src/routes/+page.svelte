@@ -1,7 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import type { PageData } from "./$types";
   import "../app.css";
 
+  export let test: PageData;
+  console.log(test);
   let loginSwitch = false;
   let tasks = [
     {
