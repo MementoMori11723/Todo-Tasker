@@ -1,6 +1,13 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
   import "../app.css";
+
+  type Todo = {
+    id: number;
+    name: string;
+    description: string;
+    lineThrough: boolean;
+  };
 
   let loginSwitch = false;
   onMount(() => {
@@ -8,31 +15,18 @@
       ? (loginSwitch = true)
       : (loginSwitch = false);
     console.log("loginSwitch", loginSwitch);
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => console.log(data.message));
   });
 
-  let tasks = [
-    {
-      id: 1,
-      name: "task-1",
-      description: "This is task - 1",
-      lineThrough: false,
-    },
-    {
-      id: 2,
-      name: "task-2",
-      description: "This is task - 2",
-      lineThrough: false,
-    },
-    {
-      id: 3,
-      name: "task-3",
-      description: "This is task - 3",
-      lineThrough: false,
-    },
-  ];
+  let tasks: Todo[] = [];
+
+  fetch("/api")
+    .then((res) => res.json())
+    .then((data) => {
+      tasks = data;
+    })
+    .catch((error) => {
+      console.error("Error fetching tasks:", error);
+    });
 </script>
 
 <button
