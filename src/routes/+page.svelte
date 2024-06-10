@@ -29,16 +29,16 @@
       ? (loginSwitch = true)
       : (loginSwitch = false);
   });
-</script>
 
-<button
-  on:click={() => {
+  const login = () => {
     loginSwitch = !loginSwitch;
     loginSwitch
       ? sessionStorage.setItem("name", "SvelteKit")
       : sessionStorage.removeItem("name");
-  }}>{loginSwitch ? "Logout" : "Login"}</button
->
+  };
+</script>
+
+<button on:click={login}>{loginSwitch ? "Logout" : "Login"}</button>
 
 <a href="/about" style="margin: 10px;">About</a>
 
@@ -50,10 +50,8 @@
         <button on:click={() => alert(task.description)}>
           {task.name}
         </button>
-        <button
-          on:click={() => {
-            task.lineThrough = !task.lineThrough;
-          }}>Done</button
+        <button on:click={() => (task.lineThrough = !task.lineThrough)}
+          >Done</button
         >
       </p>
     {/each}
