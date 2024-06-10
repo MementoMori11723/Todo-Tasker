@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { PageData } from "./$types";
+  import Navbar from "./navbar.svelte";
   import Login from "./login.svelte";
   import { onMount } from "svelte";
   import "../app.css";
@@ -14,18 +15,10 @@
       ? (loginSwitch = true)
       : (loginSwitch = false);
   });
-
-  const login = () => {
-    loginSwitch = !loginSwitch;
-    loginSwitch
-      ? sessionStorage.setItem("name", "SvelteKit")
-      : sessionStorage.removeItem("name");
-  };
 </script>
 
 <main>
-  <button on:click={login}>{loginSwitch ? "Logout" : "Login"}</button>
-  <a href="/about" style="margin: 10px;">About</a>
+  <Navbar {loginSwitch} />
   {#if loginSwitch}
     <Login {tasks} />
   {:else}
