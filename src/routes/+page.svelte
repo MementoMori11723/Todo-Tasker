@@ -2,13 +2,6 @@
   import { onMount } from "svelte";
   import "../app.css";
 
-  type Todo = {
-    id: number;
-    name: string;
-    description: string;
-    lineThrough: boolean;
-  };
-
   let loginSwitch = false;
   onMount(() => {
     sessionStorage.getItem("name")
@@ -17,16 +10,7 @@
     console.log("loginSwitch", loginSwitch);
   });
 
-  let tasks: Todo[] = [];
-
-  fetch("/api")
-    .then((res) => res.json())
-    .then((data) => {
-      tasks = data;
-    })
-    .catch((error) => {
-      console.error("Error fetching tasks:", error);
-    });
+  export let tasks;
 </script>
 
 <button
