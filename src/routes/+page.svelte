@@ -1,9 +1,5 @@
 <script lang="ts">
-  import Navbar from "$lib/components/navbar.svelte";
-  import Login from "$lib/components/login.svelte";
-  import type { PageData } from "./$types";
-  import { onMount } from "svelte";
-  import "../app.css";
+  import { type PageData, onMount, Navbar, Login } from "./imports";
 
   export let data: PageData;
   let loginSwitch = false;
@@ -23,8 +19,11 @@
   });
 </script>
 
-<main>
+<svelte:head>
+  <meta name="description" content="Todos" />
   <title>Todos</title>
+</svelte:head>
+<main>
   <Navbar {loginSwitch} {login} />
   {#if loginSwitch}
     <Login {tasks} />
