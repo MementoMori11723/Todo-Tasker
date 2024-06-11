@@ -24,6 +24,7 @@
 </script>
 
 <main>
+  <title>Todos</title>
   <Navbar {loginSwitch} {login} />
   {#if loginSwitch}
     <Login {tasks} />
