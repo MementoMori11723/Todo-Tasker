@@ -1,12 +1,11 @@
 <script lang="ts">
-  import type { PageData } from "./$types";
   import Navbar from "$lib/components/navbar.svelte";
   import Login from "$lib/components/login.svelte";
+  import type { PageData } from "./$types";
   import { onMount } from "svelte";
   import "../app.css";
 
   export let data: PageData;
-  $: console.log(data);
   let loginSwitch = false;
   let tasks = data.tasks;
 
