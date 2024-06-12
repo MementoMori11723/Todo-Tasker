@@ -25,8 +25,8 @@ export function GET() {
   return json({ tasks: data });
 }
 
-export function POST({ request, cookies }) {
-  const { id, name, description }: any = request.json();
+export async function POST({ request, cookies }) {
+  const { id, name, description }: any = await request.json();
   data.push({
     id: id,
     name: name,
