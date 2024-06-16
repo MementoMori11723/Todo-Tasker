@@ -5,6 +5,13 @@ function connectDb(): Database {
   return db;
 }
 
-module.exports = {
-  connectDb,
-};
+function addData(db: Database, data: object): object {
+  const { id, name, description, status }: any = data;
+  db.prepare("INSERT INTO Tasks VALUES (?,?,?,?)").run(
+    id,
+    name,
+    description,
+    status
+  );
+  return { success: true };
+}
