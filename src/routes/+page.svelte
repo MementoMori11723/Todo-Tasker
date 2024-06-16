@@ -35,18 +35,18 @@
     });
   });
 
-  const putResponce =  fetch("/api", {
-    method:"PUT",
+  const putResponce = fetch("/api", {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      id:2,
-      name:"Title Updated!",
+      id: 2,
+      name: "Title Updated!",
     }),
   }).then((res) => {
-    res.json().then((data) => console.log(data))    
-  })
+    res.json().then((data) => console.log(data));
+  });
 </script>
 
 <svelte:head>
