@@ -1,0 +1,10 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "data.db",
+      "database": "${workspaceFolder:Todo-Tasker}/src/lib/database/data.db"
+    }
+  ]
+}

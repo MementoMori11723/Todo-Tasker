@@ -1,8 +1,12 @@
 import { Database } from "bun:sqlite";
 
-function connectDb(): Database {
-  const db = new Database("./data.db");
-  return db;
+function connectDb(): Database | object {
+  try {
+    const db = new Database("./data.db");
+    return db;
+  } catch (err: any) {
+    return { error: err.message };
+  }
 }
 
 function addData(db: Database, data: object): object {
