@@ -1,5 +1,10 @@
-import {Database} from "bun:sqlite"
+import { Database } from "bun:sqlite";
 
-const db = new Database("./data.db")
-const query = db.query("select * from Tasks")
-console.log(query.get());
+function connectDb(): Database {
+  const db = new Database("./data.db");
+  return db;
+}
+
+module.exports = {
+  connectDb,
+};
