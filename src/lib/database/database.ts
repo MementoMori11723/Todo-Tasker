@@ -23,6 +23,17 @@ function addData(db: Database, data: object): object {
   }
 }
 
+function getData(db: Database): object {
+  try {
+    const data = db.prepare("SELECT * FROM Tasks").all();
+    db.close();
+    return { success: true, data };
+  } catch (err) {
+    db.close();
+    return { success: false, error: err };
+  }
+}
+
 // need to add a function to get data from the database, in case of any object variables are empty or undefined!
 function updateData(db: Database, data: object): object {
   try {
