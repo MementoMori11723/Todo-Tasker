@@ -37,3 +37,14 @@ function updateData(db: Database, data: object): object {
     return { success: false, error: err };
   }
 }
+
+function deleteData(db: Database, id: string): object {
+  try {
+    db.prepare("DELETE FROM Tasks WHERE userid = ?").run(id);
+    db.close();
+    return { success: true };
+  } catch (err) {
+    db.close();
+    return { success: false, error: err };
+  }
+}
