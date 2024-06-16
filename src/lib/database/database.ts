@@ -6,12 +6,16 @@ function connectDb(): Database {
 }
 
 function addData(db: Database, data: object): object {
-  const { id, name, description, status }: any = data;
-  db.prepare("INSERT INTO Tasks VALUES (?,?,?,?)").run(
-    id,
-    name,
-    description,
-    status
-  );
-  return { success: true };
+  try {
+    const { id, name, description, status }: any = data;
+    db.prepare("INSERT INTO Tasks VALUES (?,?,?,?)").run(
+      id,
+      name,
+      description,
+      status
+    );
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err };
+  }
 }
