@@ -1,5 +1,8 @@
 <script lang="ts">
-  import { type PageData, onMount, Navbar, Login } from "./imports";
+  import { Navbar, Login } from "$lib";
+  import type { PageData } from "./$types";
+  import { onMount } from "svelte";
+  import "../app.css";
 
   export let data: PageData;
   let loginSwitch = false;
