@@ -1,4 +1,4 @@
-export { Navbar, Login } from "$lib/components/imports";
+export { Navbar, Login } from "$lib";
 export type { PageData } from "./$types";
 export { onMount } from "svelte";
 import "../app.css";
