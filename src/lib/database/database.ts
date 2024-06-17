@@ -11,7 +11,7 @@ function connectDb(): Database | undefined {
 
 function getData(db: Database, id: string): object {
   try {
-    const data = db.prepare("SELECT * FROM Tasks WHERE userid = ?").run(id);
+    const data = db.query("SELECT * FROM Tasks WHERE userid = ?").get(id);
     db.close();
     return { success: true, data };
   } catch (err) {
@@ -35,19 +35,19 @@ function handleData(db: Database, data: object) {
     description = description || res?.data?.description;
     status = status || res?.data?.status;
   }
-  return { id, name, description, status };
+  const newDb = connectDb();
+  return { newDb, id, name, description, status };
 }
 
 function addData(db: Database, data: object): object {
   try {
-    const { id, name, description, status }: any = handleData(db, data);
-    if (!db) {
-      return { success: false, error: "Database connection is undefined." };
-    }
-    db.prepare(
-      "INSERT INTO Tasks(userid, title, description, status) VALUES (?,?,?,?)"
-    ).run(id, name, description, status);
-    db.close();
+    const { newDb, id, name, description, status }: any = handleData(db, data);
+    newDb
+      .prepare(
+        "INSERT INTO Tasks(userid, title, description, status) VALUES (?,?,?,?)"
+      )
+      .run(id, name, description, status);
+    newDb.close();
     return { success: true };
   } catch (err) {
     db.close();
@@ -57,11 +57,19 @@ function addData(db: Database, data: object): object {
 
 function updateData(db: Database, data: object): object {
   try {
-    const { id, name, description, status }: any = handleData(db, data);
-    db.prepare(
-      "UPDATE Tasks SET title = ?, description = ?, status = ? WHERE userid = ?"
-    ).run(name, description, status, id);
-    db.close();
+    const { newDb, id, name, description, status }: any = handleData(db, data);
+    console.log({
+      name: name,
+      description: description,
+      status: status,
+      id: id,
+    });
+    newDb
+      .prepare(
+        "UPDATE Tasks SET title = ?, description = ?, status = ? WHERE userid = ?"
+      )
+      .run(name, description, status, id);
+    newDb.close();
     return { success: true };
   } catch (err) {
     db.close();
