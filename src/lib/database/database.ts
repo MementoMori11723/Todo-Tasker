@@ -1,11 +1,11 @@
 import { Database } from "bun:sqlite";
 
-function connectDb(): Database | object {
+function connectDb(): Database | undefined {
   try {
     const db = new Database("./data.db");
     return db;
   } catch (err: any) {
-    return { error: err.message };
+    console.error(err);
   }
 }
 
@@ -31,9 +31,9 @@ function handleData(db: Database, data: object) {
     if (!res.success) {
       return { success: false, error: "id not found" };
     }
-    name = name || res.data.title;
-    description = description || res.data.description;
-    status = status || res.data.status;
+    name = name || res?.data?.title;
+    description = description || res?.data?.description;
+    status = status || res?.data?.status;
   }
   return { id, name, description, status };
 }
@@ -41,6 +41,9 @@ function handleData(db: Database, data: object) {
 function addData(db: Database, data: object): object {
   try {
     const { id, name, description, status }: any = handleData(db, data);
+    if (!db) {
+      return { success: false, error: "Database connection is undefined." };
+    }
     db.prepare(
       "INSERT INTO Tasks(userid, title, description, status) VALUES (?,?,?,?)"
     ).run(id, name, description, status);
@@ -76,3 +79,5 @@ function deleteData(db: Database, id: string): object {
     return { success: false, error: err };
   }
 }
+
+export { connectDb, getData, addData, updateData, deleteData };
