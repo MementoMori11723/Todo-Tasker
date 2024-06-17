@@ -1,6 +1,8 @@
-import { Database } from "bun:sqlite";
+// import { Database } from "bun:sqlite";
 
-function connectDb(): Database | undefined {
+import { Database } from "sqlite3";
+
+async function connectDb(): Promise<Database | undefined> {
   try {
     const db = new Database("./data.db");
     return db;
@@ -11,7 +13,7 @@ function connectDb(): Database | undefined {
 
 function getData(db: Database, id: string): object {
   try {
-    const data = db.query("SELECT * FROM Tasks WHERE userid = ?").get(id);
+    const data = db.prepare("SELECT * FROM Tasks WHERE userid = ?").get(id);
     db.close();
     return { success: true, data };
   } catch (err) {
