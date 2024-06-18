@@ -11,6 +11,12 @@ const server = serve({
     let tasks;
     if (db != undefined) {
       tasks = getData(db, "1");
+    } else {
+      return new Response("Database connection failed", {
+        headers: {
+          "content-type": "text/plain",
+        },
+      });
     }
     if (!tasks) {
       return new Response("No tasks found", {
