@@ -10,7 +10,7 @@ const server = serve({
     const db = await connectDb();
     let tasks;
     if (db != undefined) {
-      tasks = await getData(db, "1");
+      tasks = getData(db, "1");
     }
     if (!tasks) {
       return new Response("No tasks found", {
@@ -28,18 +28,13 @@ const server = serve({
   port: 8080,
 });
 
-// Function to stop the server
-function stopServer() {
-  console.log("Stopping the server...");
-  server.stop();
-  process.exit(0);
-}
-
 // Listen for "q" keypress to stop the server
 process.stdin.setRawMode(true);
 process.stdin.resume();
 process.stdin.on("data", (key) => {
   if (key.toString() === "q") {
-    stopServer();
+    console.log("Stopping the server...");
+    server.stop();
+    process.exit(0);
   }
 });
