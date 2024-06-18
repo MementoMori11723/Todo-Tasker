@@ -36,45 +36,35 @@ export async function POST({ request, cookies }) {
   return json({ tasks: data });
 }
 
-export async function PUT({request, cookies}) {
-  const updateName = (
-    id:number,
-    name:string,
+export async function PUT({ request, cookies }) {
+  const updateName = (id: number, name: string) => {
+    data[id].name = name;
+  };
+
+  const updateDescription = (id: number, description: string) => {
+    data[id].description = description;
+  };
+
+  const updateNameAndDescription = (
+    id: number,
+    name: string,
+    description: string
   ) => {
-    data[id].name = name
-  }
+    updateName(id, name);
+    updateDescription(id, description);
+  };
 
-  const updateDescription = (
-    id:number,
-    description:string
-  ) => {
-    data[id].description = description
-  }
+  const { id, name, description }: any = await request.json();
 
-  const updateNameAndDescription = ( 
-    id:number,
-    name:string,
-    description:string
-  ) => {
-    updateName(id,name)
-    updateDescription(id,description)
-  }
-
-  const {
-    id,
-    name, 
-    description
-  }: any = await request.json()
-
-  if(name && description) {
-    updateNameAndDescription(id,name,description)
-  } else if(name) {
-    updateName(id,name)
-  } else if(description) {
-    updateDescription(id,description)
+  if (name && description) {
+    updateNameAndDescription(id, name, description);
+  } else if (name) {
+    updateName(id, name);
+  } else if (description) {
+    updateDescription(id, description);
   } else {
-    return json({error:"Data not updated!"})
+    return json({ error: "Data not updated!" });
   }
-    
-  return json({tasks:data})
+
+  return json({ tasks: data });
 }

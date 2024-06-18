@@ -1,8 +1,7 @@
-// import { Database } from "bun:sqlite";
+import pkg from "sqlite3";
+const { Database } = pkg;
 
-import { Database } from "sqlite3";
-
-async function connectDb(): Promise<Database | undefined> {
+async function connectDb() {
   try {
     const db = new Database("./data.db");
     return db;
@@ -11,7 +10,7 @@ async function connectDb(): Promise<Database | undefined> {
   }
 }
 
-function getData(db: Database, id: string): object {
+function getData(db: any, id: string): object {
   try {
     const data = db.prepare("SELECT * FROM Tasks WHERE userid = ?").get(id);
     db.close();
@@ -22,7 +21,7 @@ function getData(db: Database, id: string): object {
   }
 }
 
-function handleData(db: Database, data: object) {
+function handleData(db: any, data: object) {
   const { id }: any = data;
   let { name, description, status }: any = data;
   if (!id) {
@@ -41,7 +40,7 @@ function handleData(db: Database, data: object) {
   return { newDb, id, name, description, status };
 }
 
-function addData(db: Database, data: object): object {
+function addData(db: any, data: object): object {
   try {
     const { newDb, id, name, description, status }: any = handleData(db, data);
     newDb
@@ -57,7 +56,7 @@ function addData(db: Database, data: object): object {
   }
 }
 
-function updateData(db: Database, data: object): object {
+function updateData(db: any, data: object): object {
   try {
     const { newDb, id, name, description, status }: any = handleData(db, data);
     console.log({
@@ -79,7 +78,7 @@ function updateData(db: Database, data: object): object {
   }
 }
 
-function deleteData(db: Database, id: string): object {
+function deleteData(db: any, id: string): object {
   try {
     db.prepare("DELETE FROM Tasks WHERE userid = ?").run(id);
     db.close();
