@@ -12,7 +12,7 @@ async function connectDb() {
 
 function getData(db: any, id: string): object {
   try {
-    const data = db.prepare("SELECT * FROM Tasks WHERE userid = ?").get(id);
+    const data = db.prepare("SELECT * FROM Tasks WHERE userid = ?").run(id);
     db.close();
     return { success: true, data };
   } catch (err) {
