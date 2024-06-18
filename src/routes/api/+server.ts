@@ -25,7 +25,7 @@ export function GET() {
   return json({ tasks: data });
 }
 
-export async function POST({ request, cookies }) {
+export async function POST({ request }) {
   const { id, name, description }: any = await request.json();
   data.push({
     id: id,
@@ -36,7 +36,7 @@ export async function POST({ request, cookies }) {
   return json({ tasks: data });
 }
 
-export async function PUT({ request, cookies }) {
+export async function PUT({ request }) {
   const updateName = (id: number, name: string) => {
     data[id].name = name;
   };

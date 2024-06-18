@@ -1,7 +1,11 @@
 import { serve } from "bun";
 import { connectDb, getData } from "./database";
 
-serve({
+// Start the server
+console.log(
+  "Server is running on http://localhost:8080\nPress 'q' to stop the server."
+);
+const server = serve({
   fetch: async (req: Request) => {
     const db = await connectDb();
     let tasks;
@@ -22,4 +26,20 @@ serve({
     });
   },
   port: 8080,
+});
+
+// Function to stop the server
+function stopServer() {
+  console.log("Stopping the server...");
+  server.stop();
+  process.exit(0);
+}
+
+// Listen for "q" keypress to stop the server
+process.stdin.setRawMode(true);
+process.stdin.resume();
+process.stdin.on("data", (key) => {
+  if (key.toString() === "q") {
+    stopServer();
+  }
 });
