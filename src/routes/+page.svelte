@@ -11,45 +11,43 @@
   const login = () => {
     loginSwitch = !loginSwitch;
     loginSwitch
-      ? sessionStorage.setItem("name", "SvelteKit")
-      : sessionStorage.removeItem("name");
+      ? localStorage.setItem("name", "SvelteKit")
+      : localStorage.removeItem("name");
   };
 
   onMount(() => {
-    sessionStorage.getItem("name")
-      ? (loginSwitch = true)
-      : (loginSwitch = false);
+    localStorage.getItem("name") ? (loginSwitch = true) : (loginSwitch = false);
   });
 
-  const responce = fetch("/api", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      id: 4,
-      name: "SvelteKit",
-      description:
-        "SvelteKit is a framework for building web applications of all sizes, with a beautiful development experience and flexible filesystem-based routing.",
-    }),
-  }).then((res) => {
-    res.json().then((data) => {
-      console.log(data);
-    });
-  });
+  // const responce = fetch("/api", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     id: 4,
+  //     name: "SvelteKit",
+  //     description:
+  //       "SvelteKit is a framework for building web applications of all sizes, with a beautiful development experience and flexible filesystem-based routing.",
+  //   }),
+  // }).then((res) => {
+  //   res.json().then((data) => {
+  //     console.log(data);
+  //   });
+  // });
 
-  const putResponce = fetch("/api", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      id: 2,
-      name: "Title Updated!",
-    }),
-  }).then((res) => {
-    res.json().then((data) => console.log(data));
-  });
+  // const putResponce = fetch("/api", {
+  //   method: "PUT",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     id: 2,
+  //     name: "Title Updated!",
+  //   }),
+  // }).then((res) => {
+  //   res.json().then((data) => console.log(data));
+  // });
 </script>
 
 <svelte:head>
