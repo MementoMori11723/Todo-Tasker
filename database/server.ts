@@ -58,6 +58,8 @@ const server = serve({
       return returnHeader({ message: "Database not connected" });
     }
     switch (req.method) {
+      default:
+        return returnHeader({ message: "Invalid request" });
       case "GET":
         return getResponse(db);
       case "POST":
@@ -66,8 +68,6 @@ const server = serve({
         return putResponse(db);
       case "DELETE":
         return deleteResponse(db);
-      default:
-        return returnHeader({ message: "Invalid request" });
     }
   },
   port: 8080,
