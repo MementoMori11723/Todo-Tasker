@@ -7,7 +7,13 @@
   export let data: PageData;
   $: console.log(data);
   let loginSwitch = false;
+  if (data.error) {
+    console.error(data.error);
+  }
   let tasks = data.tasks;
+  if (!tasks) {
+    tasks = [];
+  }
 
   const login = () => {
     loginSwitch = !loginSwitch;
