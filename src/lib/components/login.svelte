@@ -4,14 +4,13 @@
 
 <h1>Logged in!</h1>
 <div>
-  {#each tasks as task (task.id)}
-    <p class={task.lineThrough ? "line-through" : ""}>
-      <button on:click={() => alert(task.description)}>
-        {task.name}
-      </button>
-      <button on:click={() => (task.lineThrough = !task.lineThrough)}
-        >Done</button
-      >
-    </p>
-  {/each}
+  <p class={tasks.status ? "line-through" : ""}>
+    <button on:click={() => alert(tasks.description)}>
+      {tasks.title}
+    </button>
+    <button on:click={() => (tasks.status = !tasks.status)}>Done</button>
+  </p>
+  <!-- {#each tasks as task (task.userid)}
+
+  {/each} -->
 </div>

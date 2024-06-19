@@ -27,7 +27,8 @@ const server = serve({
     }
     return new Response(JSON.stringify(tasks), {
       headers: {
-        "content-type": "text/plain",
+        "content-type": "application/json",
+        "Allow-Access-Control-Origin": "*",
       },
     });
   },

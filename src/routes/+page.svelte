@@ -5,6 +5,7 @@
   import "../app.css";
 
   export let data: PageData;
+  $: console.log(data);
   let loginSwitch = false;
   let tasks = data.tasks;
 
