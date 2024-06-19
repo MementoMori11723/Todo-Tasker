@@ -12,12 +12,14 @@
   const login = () => {
     loginSwitch = !loginSwitch;
     loginSwitch
-      ? localStorage.setItem("name", "SvelteKit")
-      : localStorage.removeItem("name");
+      ? localStorage.setItem("Tasks", "")
+      : localStorage.removeItem("Tasks");
   };
 
   onMount(() => {
-    localStorage.getItem("name") ? (loginSwitch = true) : (loginSwitch = false);
+    localStorage.getItem("Tasks")
+      ? (loginSwitch = true)
+      : (loginSwitch = false);
   });
 </script>
 
