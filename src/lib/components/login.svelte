@@ -4,13 +4,12 @@
 
 <h1>Logged in!</h1>
 <div>
-  <p class={tasks.status ? "line-through" : ""}>
-    <button on:click={() => alert(tasks.description)}>
-      {tasks.title}
-    </button>
-    <button on:click={() => (tasks.status = !tasks.status)}>Done</button>
-  </p>
-  <!-- {#each tasks as task (task.userid)}
-
-  {/each} -->
+  {#each tasks as task (task.userid)}
+    <p class={task.status ? "line-through" : ""}>
+      <button on:click={() => alert(task.description)}>
+        {task.title}
+      </button>
+      <button on:click={() => (task.status = !task.status)}>Done</button>
+    </p>
+  {/each}
 </div>

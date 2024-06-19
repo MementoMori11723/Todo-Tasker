@@ -24,7 +24,7 @@ const data = [
 export async function GET() {
   const res = await fetch("http://localhost:8080/");
   const data = await res.json();
-  return json({ tasks: data.data });
+  return json({ tasks: [data.data] });
 }
 
 export async function POST({ request }) {
