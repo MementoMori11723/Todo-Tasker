@@ -22,9 +22,12 @@ const data = [
 ];
 
 export async function GET() {
-  const res = await fetch("http://localhost:8080/");
-  const data = await res.json();
-  return json({ tasks: [data.data] });
+  const res = await fetch("http://localhost:8080/")
+    .then((res) => res.json())
+    .catch((err) => {
+      return { error: "failed to fetch" };
+    });
+  return json(res.data ? { tasks: [res.data] } : { error: "No tasks found" });
 }
 
 export async function POST({ request }) {
