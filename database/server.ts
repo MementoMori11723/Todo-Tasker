@@ -1,5 +1,11 @@
 import { serve } from "bun";
-import { connectDb, getData } from "./database";
+import {
+  connectDb,
+  getData,
+  addData,
+  deleteData,
+  updateData,
+} from "./database";
 
 // Start the server
 console.log(
@@ -16,39 +22,37 @@ function returnHeader(msg: object) {
   });
 }
 
-function getResponse(db: any) {
-  const tasks = getData(db, "1");
+function getResponse(db: any, id: any) {
+  const tasks = getData(db, id);
   if (!tasks) {
     return returnHeader({ message: "No tasks found" });
   }
   return returnHeader({ tasks });
 }
 
-// need to configure this
-function postResponse(db: any) {
-  const tasks = getData(db, "1");
-  if (!tasks) {
-    return returnHeader({ message: "No tasks found" });
+function postResponse(db: any, data: any) {
+  const res: any = addData(db, data);
+  if (!res.success) {
+    return returnHeader({ message: "Failed to add task" });
   }
-  return returnHeader({ tasks });
+  return returnHeader({ message: "Task added successfully" });
+}
+
+function putResponse(db: any, data: any) {
+  const res: any = updateData(db, data);
+  if (!res.success) {
+    return returnHeader({ message: "Failed to update task" });
+  }
+  return returnHeader({ message: "Task updated successfully" });
 }
 
 // need to configure this
-function putResponse(db: any) {
-  const tasks = getData(db, "1");
-  if (!tasks) {
-    return returnHeader({ message: "No tasks found" });
+function deleteResponse(db: any, id: any) {
+  const res: any = deleteData(db, id);
+  if (!res.success) {
+    return returnHeader({ message: "No task found" });
   }
-  return returnHeader({ tasks });
-}
-
-// need to configure this
-function deleteResponse(db: any) {
-  const tasks = getData(db, "1");
-  if (!tasks) {
-    return returnHeader({ message: "No tasks found" });
-  }
-  return returnHeader({ tasks });
+  return returnHeader({ message: "Task deleted successfully" });
 }
 
 const server = serve({
@@ -61,13 +65,13 @@ const server = serve({
       default:
         return returnHeader({ message: "Invalid request" });
       case "GET":
-        return getResponse(db);
+        return getResponse(db, req.url.split("/")[1]);
       case "POST":
-        return postResponse(db);
+        return postResponse(db, req.body);
       case "PUT":
-        return putResponse(db);
+        return putResponse(db, req.body);
       case "DELETE":
-        return deleteResponse(db);
+        return deleteResponse(db, req.url.split("/")[1]);
     }
   },
   port: 8080,
