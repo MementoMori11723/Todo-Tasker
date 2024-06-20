@@ -1,11 +1,5 @@
 import { serve } from "bun";
-import {
-  connectDb,
-  getData,
-  addData,
-  deleteData,
-  updateData,
-} from "./database";
+import { getData, addData, deleteData, updateData } from "./database";
 
 // Start the server
 console.log(
@@ -22,29 +16,25 @@ function returnHeader(msg: object) {
   });
 }
 
-function getResponse(db: any, id: any) {
-  const tasks = getData(db, id);
+function getResponse(id: any) {
+  const tasks = getData(id);
   if (!tasks) {
     return returnHeader({ message: "No tasks found" });
   }
   return returnHeader({ tasks });
 }
 
-function postResponse(db: any, data: any) {
-  console.log(data);
-  const res: any = addData(db, data);
+async function postResponse(data: any) {
+  const res: any = await addData(data);
+  console.log(res);
   if (!res.success) {
-    return returnHeader({
-      message: "Failed to add task",
-      error: res.error,
-      res: res,
-    });
+    return returnHeader({ message: "Failed to add task" });
   }
   return returnHeader({ message: "Task added successfully" });
 }
 
-function putResponse(db: any, data: any) {
-  const res: any = updateData(db, data);
+function putResponse(data: any) {
+  const res: any = updateData(data);
   if (!res.success) {
     return returnHeader({ message: "Failed to update task" });
   }
@@ -52,8 +42,8 @@ function putResponse(db: any, data: any) {
 }
 
 // need to configure this
-function deleteResponse(db: any, id: any) {
-  const res: any = deleteData(db, id);
+function deleteResponse(id: any) {
+  const res: any = deleteData(id);
   if (!res.success) {
     return returnHeader({ message: "No task found" });
   }
@@ -62,21 +52,17 @@ function deleteResponse(db: any, id: any) {
 
 const server = serve({
   fetch: async (req: Request) => {
-    const db = await connectDb();
-    if (db == undefined) {
-      return returnHeader({ message: "Database not connected" });
-    }
     switch (req.method) {
       default:
         return returnHeader({ message: "Invalid request" });
       case "GET":
-        return getResponse(db, req.url.split("/").sort()[1]);
+        return getResponse(req.url.split("/").sort()[1]);
       case "POST":
-        return postResponse(db, await req.json());
+        return postResponse(await req.json());
       case "PUT":
-        return putResponse(db, await req.json());
+        return putResponse(await req.json());
       case "DELETE":
-        return deleteResponse(db, req.url.split("/").sort()[1]);
+        return deleteResponse(req.url.split("/").sort()[1]);
     }
   },
   port: 8080,

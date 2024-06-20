@@ -1,52 +1,67 @@
 import { Database } from "bun:sqlite";
-async function connectDb() {
+
+async function connectDb(): Promise<Database | null> {
   try {
     const db = new Database("./data.db");
     return db;
-  } catch (err: any) {
+  } catch (err) {
     console.error(err);
+    return null;
   }
 }
 
-function getData(db: Database, id: string): object {
+async function getData(id: string): Promise<object> {
+  const db = await connectDb();
+  if (!db) {
+    return { success: false, error: "Failed to connect to database" };
+  }
   try {
     const data = db.query("SELECT * FROM Tasks WHERE userid = ?").get(id);
-    db.close();
     return { success: true, data };
   } catch (err) {
-    db.close();
     return { success: false, error: err };
   }
 }
 
-function handleData(db: Database, data: object) {
-  const { id }: any = data;
-  let { name, description, status }: any = data;
+function handleData(db: Database, data: any) {
+  const { id, name, description, status } = data;
   if (!id) {
     return { success: false, error: "id is required" };
   }
-  if (!name || !description || !status) {
-    const res: any = getData(db, id);
+
+  let updatedName = name;
+  let updatedDescription = description;
+  let updatedStatus = status;
+
+  if (!updatedName || !updatedDescription || !updatedStatus) {
+    const res: any = getData(id);
     if (!res.success) {
       return { success: false, error: "id not found" };
     }
-    name = name || res?.data?.title;
-    description = description || res?.data?.description;
-    status = status || res?.data?.status;
+    updatedName = updatedName || res?.data?.title;
+    updatedDescription = updatedDescription || res?.data?.description;
+    updatedStatus = updatedStatus || res?.data?.status;
   }
-  const newDb = connectDb();
-  return { newDb, id, name, description, status };
+
+  return {
+    id,
+    name: updatedName,
+    description: updatedDescription,
+    status: updatedStatus,
+  };
 }
 
-function addData(db: Database, data: object): object {
+async function addData(data: object): Promise<object> {
+  const db = await connectDb();
+  if (!db) {
+    return { success: false, error: "Failed to connect to database" };
+  }
   try {
-    const { newDb, id, name, description, status }: any = handleData(db, data);
-    newDb
-      .prepare(
-        "INSERT INTO Tasks(userid, title, description, status) VALUES (?,?,?,?)"
-      )
-      .run(id, name, description, status);
-    newDb.close();
+    const { id, name, description, status }: any = handleData(db, data);
+    db.prepare(
+      "INSERT INTO Tasks(userid, title, description, status) VALUES (?,?,?,?)"
+    ).run(id, name, description, status ? 1 : 0);
+    db.close();
     return { success: true };
   } catch (err) {
     db.close();
@@ -54,28 +69,32 @@ function addData(db: Database, data: object): object {
   }
 }
 
-function updateData(db: Database, data: object): object {
+async function updateData(data: object): Promise<object> {
+  const db = await connectDb();
+  if (!db) {
+    return { success: false, error: "Failed to connect to database" };
+  }
+
   try {
-    const { newDb, id, name, description, status }: any = handleData(db, data);
-    console.log({
-      name: name,
-      description: description,
-      status: status,
-      id: id,
-    });
-    newDb
-      .prepare(
-        "UPDATE Tasks SET title = ?, description = ?, status = ? WHERE userid = ?"
-      )
-      .run(name, description, status, id);
-    newDb.close();
+    const { id, name, description, status }: any = handleData(db, data);
+    console.log({ name, description, status, id });
+    db.prepare(
+      "UPDATE Tasks SET title = ?, description = ?, status = ? WHERE userid = ?"
+    ).run(name, description, status ? 1 : 0, id);
+    db.close();
     return { success: true };
   } catch (err) {
+    db.close();
     return { success: false, error: err };
   }
 }
 
-function deleteData(db: Database, id: string): object {
+async function deleteData(id: string): Promise<object> {
+  const db = await connectDb();
+  if (!db) {
+    return { success: false, error: "Failed to connect to database" };
+  }
+
   try {
     db.prepare("DELETE FROM Tasks WHERE userid = ?").run(id);
     db.close();
