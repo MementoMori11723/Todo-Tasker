@@ -71,7 +71,6 @@ function updateData(db: Database, data: object): object {
     newDb.close();
     return { success: true };
   } catch (err) {
-    db.close();
     return { success: false, error: err };
   }
 }

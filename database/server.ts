@@ -31,9 +31,14 @@ function getResponse(db: any, id: any) {
 }
 
 function postResponse(db: any, data: any) {
+  console.log(data);
   const res: any = addData(db, data);
   if (!res.success) {
-    return returnHeader({ message: "Failed to add task" });
+    return returnHeader({
+      message: "Failed to add task",
+      error: res.error,
+      res: res,
+    });
   }
   return returnHeader({ message: "Task added successfully" });
 }
@@ -65,13 +70,13 @@ const server = serve({
       default:
         return returnHeader({ message: "Invalid request" });
       case "GET":
-        return getResponse(db, req.url.split("/")[1]);
+        return getResponse(db, req.url.split("/").sort()[1]);
       case "POST":
-        return postResponse(db, req.body);
+        return postResponse(db, await req.json());
       case "PUT":
-        return putResponse(db, req.body);
+        return putResponse(db, await req.json());
       case "DELETE":
-        return deleteResponse(db, req.url.split("/")[1]);
+        return deleteResponse(db, req.url.split("/").sort()[1]);
     }
   },
   port: 8080,
