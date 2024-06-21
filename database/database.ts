@@ -30,41 +30,13 @@ async function getData(id: string): Promise<object> {
   }
 }
 
-function handleData(data: any) {
-  const { id, name, description, status } = data;
-  if (!id) {
-    return { success: false, error: "id is required" };
-  }
-
-  let updatedName = name;
-  let updatedDescription = description;
-  let updatedStatus = status;
-
-  if (!updatedName || !updatedDescription || !updatedStatus) {
-    const res: any = getData(id);
-    if (!res.success) {
-      return { success: false, error: "id not found" };
-    }
-    updatedName = updatedName || res?.data?.title;
-    updatedDescription = updatedDescription || res?.data?.description;
-    updatedStatus = updatedStatus || res?.data?.status;
-  }
-
-  return {
-    id,
-    name: updatedName,
-    description: updatedDescription,
-    status: updatedStatus,
-  };
-}
-
 async function addData(data: object): Promise<object> {
   const db = await connectDb();
   if (!db) {
     return { success: false, error: "Failed to connect to database" };
   }
   try {
-    const { id, name, description, status }: any = handleData(data);
+    const { id, name, description, status }: any = data;
     db.query(
       "INSERT INTO Tasks(userid, title, description, status) VALUES (?,?,?,?)"
     ).run(id, name, description, status ? 1 : 0);
@@ -81,11 +53,9 @@ async function updateData(data: object): Promise<object> {
   if (!db) {
     return { success: false, error: "Failed to connect to database" };
   }
-
   try {
-    const { id, name, description, status }: any = handleData(data);
-    console.log({ name, description, status, id });
-    db.prepare(
+    const { id, name, description, status }: any = data;
+    db.query(
       "UPDATE Tasks SET title = ?, description = ?, status = ? WHERE userid = ?"
     ).run(name, description, status ? 1 : 0, id);
     db.close();
@@ -101,7 +71,6 @@ async function deleteData(id: string): Promise<object> {
   if (!db) {
     return { success: false, error: "Failed to connect to database" };
   }
-
   try {
     db.prepare("DELETE FROM Tasks WHERE userid = ?").run(id);
     db.close();
