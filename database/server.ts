@@ -16,8 +16,8 @@ function returnHeader(msg: object) {
   });
 }
 
-function getResponse(id: any) {
-  const tasks = getData(id);
+async function getResponse(id: any) {
+  const tasks = await getData(id);
   if (!tasks) {
     return returnHeader({ message: "No tasks found" });
   }
@@ -33,8 +33,8 @@ async function postResponse(data: any) {
   return returnHeader({ message: "Task added successfully" });
 }
 
-function putResponse(data: any) {
-  const res: any = updateData(data);
+async function putResponse(data: any) {
+  const res: any = await updateData(data);
   if (!res.success) {
     return returnHeader({ message: "Failed to update task" });
   }
@@ -42,8 +42,8 @@ function putResponse(data: any) {
 }
 
 // need to configure this
-function deleteResponse(id: any) {
-  const res: any = deleteData(id);
+async function deleteResponse(id: any) {
+  const res: any = await deleteData(id);
   if (!res.success) {
     return returnHeader({ message: "No task found" });
   }

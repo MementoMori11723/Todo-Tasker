@@ -16,14 +16,21 @@ async function getData(id: string): Promise<object> {
     return { success: false, error: "Failed to connect to database" };
   }
   try {
+    if (id === null || id === undefined || id === "") {
+      const data = db.query("SELECT * FROM Tasks").all();
+      return { success: true, data };
+    }
     const data = db.query("SELECT * FROM Tasks WHERE userid = ?").get(id);
+    if (!data) {
+      return { success: false, error: "id not found" };
+    }
     return { success: true, data };
   } catch (err) {
     return { success: false, error: err };
   }
 }
 
-function handleData(db: Database, data: any) {
+function handleData(data: any) {
   const { id, name, description, status } = data;
   if (!id) {
     return { success: false, error: "id is required" };
@@ -57,7 +64,7 @@ async function addData(data: object): Promise<object> {
     return { success: false, error: "Failed to connect to database" };
   }
   try {
-    const { id, name, description, status }: any = handleData(db, data);
+    const { id, name, description, status }: any = handleData(data);
     db.prepare(
       "INSERT INTO Tasks(userid, title, description, status) VALUES (?,?,?,?)"
     ).run(id, name, description, status ? 1 : 0);
@@ -76,7 +83,7 @@ async function updateData(data: object): Promise<object> {
   }
 
   try {
-    const { id, name, description, status }: any = handleData(db, data);
+    const { id, name, description, status }: any = handleData(data);
     console.log({ name, description, status, id });
     db.prepare(
       "UPDATE Tasks SET title = ?, description = ?, status = ? WHERE userid = ?"
