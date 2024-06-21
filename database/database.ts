@@ -65,7 +65,7 @@ async function addData(data: object): Promise<object> {
   }
   try {
     const { id, name, description, status }: any = handleData(data);
-    db.prepare(
+    db.query(
       "INSERT INTO Tasks(userid, title, description, status) VALUES (?,?,?,?)"
     ).run(id, name, description, status ? 1 : 0);
     db.close();
