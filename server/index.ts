@@ -1,5 +1,5 @@
 import { serve } from "bun";
-import { getData, addData, deleteData, updateData } from "./database";
+import { getData, addData, deleteData, updateData } from "./database/tasks";
 
 // Start the server
 console.log(
@@ -26,7 +26,6 @@ async function getResponse(id: any) {
 
 async function postResponse(data: any) {
   const res: any = await addData(data);
-  console.log(res);
   if (!res.success) {
     return returnHeader({ message: "Failed to add task" });
   }
