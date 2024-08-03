@@ -10,16 +10,13 @@ async function connectDb(): Promise<Database | null> {
   }
 }
 
-async function insertUser() {
+async function insert(query: string, values: any[]) {
   const db = await connectDb();
   if (!db) {
     return { success: false, error: "Failed to connect to database" };
   }
   try {
-    // we will insert a new user.
-    db.query(
-      "INSERT INTO Users(userid, username, email, password) VALUES (?,?,?,?)"
-    ).run("1", "john", "[email protected]", "password"); //need to change these values.
+    db.query(query).run(...values);
     return { success: true };
   } catch (err) {
     db.close();
@@ -27,17 +24,17 @@ async function insertUser() {
   }
 }
 
-async function getUser(id: string): Promise<object> {
+async function select(query: string, values: any[]) {
   const db = await connectDb();
   if (!db) {
     return { success: false, error: "Failed to connect to database" };
   }
   try {
-    if (id === null || id === undefined || id === "") {
-      const data = db.query("SELECT * FROM Users").all();
+    if (values.length === 0) {
+      const data = db.query(query).all();
       return { success: true, data };
     }
-    const data = db.query("SELECT * FROM Users WHERE userid = ?").get(id);
+    const data = db.query(query).get(...values);
     if (!data) {
       return { success: false, error: "id not found" };
     }
@@ -47,4 +44,18 @@ async function getUser(id: string): Promise<object> {
   }
 }
 
-export { insertUser, getUser }
+async function update(query: string, values: any[]) {
+  const db = await connectDb();
+  if (!db) {
+    return { success: false, error: "Failed to connect to database" };
+  }
+  try {
+    db.query(query).run(...values);
+    return { success: true };
+  } catch (err) {
+    db.close();
+    return { success: false, error: err };
+  }
+}
+
+export { insert, select, update };
