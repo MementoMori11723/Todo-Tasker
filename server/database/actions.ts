@@ -1,5 +1,7 @@
 import { Database } from "bun:sqlite";
 
+// having issuse with connecting with database. need to fix this.
+
 async function connectDb(): Promise<Database | null> {
   try {
     const db = new Database("./database/data.db");
