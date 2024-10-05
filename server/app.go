@@ -1,17 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"go-server/config"
 	"go-server/handler"
 	"net/http"
+	"log"
 )
 
 func main() {
 	for route, function := range handler.Routes {
 		http.HandleFunc(route, function)
 	}
-	fmt.Println(
+	log.Println(
 		"Server" +
 			" running " +
 			" on " +
