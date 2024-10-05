@@ -1,28 +1,18 @@
 package database
 
 import (
+	"go-server/config"
 	"database/sql"
 	"fmt"
-	"go-server/config"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type Task struct {
-	ID          int    `json:"id"`
-	UserID      int    `json:"user_id"`
-	TaskName    string `json:"task_name"`
-	Description string `json:"description"`
-}
-
-type User struct {
-	ID       int    `json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
 func Connect() *sql.DB {
-	db, err := sql.Open(config.DatabaseDriver, config.DatabaseURL)
+	db, err := sql.Open(
+		config.DatabaseDriver,
+		config.DatabaseURL,
+	)
 	if err != nil {
 		fmt.Println(err)
 	}
