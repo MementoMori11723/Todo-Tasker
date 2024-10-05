@@ -21,12 +21,13 @@ type User struct {
 }
 
 var (
-	Routes = map[string]func(http.ResponseWriter, *http.Request) {
-    "GET /tasks": GetTask,
-    "POST /tasks": InsertTask,
-    "PUT /tasks": UpdateTask,
-    "DELETE /tasks": DeleteTask,
-  }
+	Routes = make(map[string]func(http.ResponseWriter, *http.Request))
+  // {
+  //   "GET /tasks": GetTask,
+  //   "POST /tasks": InsertTask,
+  //   "PUT /tasks": UpdateTask,
+  //   "DELETE /tasks": DeleteTask,
+  // }
 )
 
 func GetTask(w http.ResponseWriter, r *http.Request) {

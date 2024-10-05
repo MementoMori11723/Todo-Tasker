@@ -11,13 +11,6 @@ func main() {
 	for route, function := range handler.Routes {
 		http.HandleFunc(route, function)
 	}
-	log.Println(
-		"Server" +
-			" running " +
-			" on " +
-			" port " +
-			" http://localhost" +
-			config.Port,
-	)
+	log.Println("Server started on port", config.Port)
 	http.ListenAndServe(config.Port, nil)
 }
