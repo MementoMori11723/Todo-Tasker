@@ -1,4 +1,4 @@
-package database
+package dbconnect
 
 import (
 	"go-server/config"
