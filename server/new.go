@@ -1,6 +1,8 @@
 package server
 
 import (
+	"Todo-Tasker/server/database"
+	"Todo-Tasker/server/middleware"
 	"embed"
 	"net/http"
 )
@@ -13,6 +15,7 @@ var (
 	assets embed.FS
 
 	layout = "pages/layout.html"
+  api = database.NewApiMux()
 	routes = map[string]func(http.ResponseWriter, *http.Request){
 		"/":      home,
 		"/about": about,
@@ -21,7 +24,7 @@ var (
 	}
 )
 
-func New() *http.ServeMux {
+func New() http.Handler {
 	mux := http.NewServeMux()
 	mux.Handle("/assets/",
 		http.StripPrefix(
@@ -36,5 +39,9 @@ func New() *http.ServeMux {
 	for path, handler := range routes {
 		mux.HandleFunc(path, handler)
 	}
-	return mux
+  mux.Handle("/api/", 
+    http.StripPrefix("/api", api),
+  )
+  newMux := middleware.Log(mux)
+	return newMux
 }
