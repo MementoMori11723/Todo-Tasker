@@ -12,7 +12,7 @@ func main() {
 		server := server.New()
 		log.Println("Server started on http://localhost:8000")
 		log.Println("Press Enter to stop the server")
-		if err := http.ListenAndServe(":8000", server); err != nil {
+    if err := http.ListenAndServe(":8000", server); err != nil {
 			log.Fatal(err)
 		}
 	}()
