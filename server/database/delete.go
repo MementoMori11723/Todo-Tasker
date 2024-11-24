@@ -7,3 +7,7 @@ import (
 func deleteTodo(w http.ResponseWriter, r *http.Request) {
   w.Write([]byte("This is a DELETE request"))
 }
+
+func deleteUser(w http.ResponseWriter, r *http.Request) {
+  w.Write([]byte("This is a DELETE request"))
+}

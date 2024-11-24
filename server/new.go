@@ -20,6 +20,7 @@ var (
 		"/":      home,
 		"/about": about,
 		"/todo":  todo,
+    "/login": login,
 		"/error": error,
 	}
 )

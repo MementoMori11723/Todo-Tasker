@@ -63,3 +63,15 @@ func getTodos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func getUsers(w http.ResponseWriter, r *http.Request) {
+}
+
+func getUserByID(w http.ResponseWriter, r *http.Request) {
+}
+
+func getPreferences(w http.ResponseWriter, r *http.Request) {
+}
+
+func getTodoByID(w http.ResponseWriter, r *http.Request) {
+}

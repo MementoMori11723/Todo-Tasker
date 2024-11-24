@@ -80,6 +80,30 @@ func todo(w http.ResponseWriter, r *http.Request) {
   }
 }
 
+func login(w http.ResponseWriter, r *http.Request) {
+  if r.URL.Path != "/login" {
+    http.Redirect(w, r, "/error", http.StatusFound)
+  }
+  tmpl, err := template.ParseFS(
+    pages, layout, 
+    "pages/login.html",
+  )	
+  if err != nil {
+    http.Error(
+      w, err.Error(), 
+      http.StatusInternalServerError,
+    )
+    return
+  }
+  if err := tmpl.Execute(w, nil); err != nil {
+    http.Error(
+      w, err.Error(), 
+      http.StatusInternalServerError,
+    )
+    return
+  }
+}
+
 func error(w http.ResponseWriter, r *http.Request) {
   tmpl, err := template.ParseFS(
     pages, layout, 

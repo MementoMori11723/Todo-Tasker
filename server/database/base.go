@@ -14,11 +14,23 @@ var (
 	todosQuery       = "CREATE TABLE todos (id INTEGER PRIMARY KEY, user_id INTEGER, task TEXT, description TEXT, labels TEXT, status TEXT, start_time TEXT, end_time TEXT, image TEXT);"
 	usersQuery       = "CREATE TABLE users (id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, username TEXT, email TEXT, password TEXT, image TEXT);"
 	preferencesQuery = "CREATE TABLE preferences (user_id INTEGER PRIMARY KEY, theme TEXT, language TEXT);"
-	apiRoutes        = map[string]func(http.ResponseWriter, *http.Request){
-		"GET /":    getTodos,
-		"POST /":   createTodo,
-		"PUT /":    updateTodo,
-		"DELETE /": deleteTodo,
+
+	apiRoutes = map[string]func(http.ResponseWriter, *http.Request){
+		"GET /todos":      getTodos,
+		"GET /todos/{id}": getTodoByID,
+		"POST /todos":     createTodo,
+		"PUT /todos":      updateTodo,
+		"DELETE /todos":   deleteTodo,
+
+		"GET /users":      getUsers,
+		"GET /users/{id}": getUserByID,
+		"POST /users":     createUser,
+		"PUT /users":      updateUser,
+		"DELETE /users":   deleteUser,
+
+		"GET /preferences":  getPreferences,
+		"POST /preferences": createPreferences,
+		"PUT /preferences":  updatePreferences,
 	}
 )
 
@@ -26,12 +38,12 @@ type Todo struct {
 	ID          int      `json:"id"`
 	UserID      int      `json:"userId"`
 	Task        string   `json:"task"`
-	Description string   `json:"description"`
+	Description string   `json:"description,omitempty"`
 	Labels      []string `json:"labels"`
 	Status      string   `json:"status"`
-	StartTime   string   `json:"startTime"`
-	EndTime     string   `json:"endTime"`
-	Image       string   `json:"image"`
+	StartTime   string   `json:"startTime,omitempty"`
+	EndTime     string   `json:"endTime,omitempty"`
+	Image       string   `json:"image,omitempty"`
 }
 
 type User struct {
@@ -41,13 +53,13 @@ type User struct {
 	Username  string `json:"username"`
 	Email     string `json:"email"`
 	Password  string `json:"password"`
-	Image     string `json:"image"`
+	Image     string `json:"image,omitempty"`
 }
 
 type Preferences struct {
-	UserID        int    `json:"userId"`
-	Theme         string `json:"theme"`
-	Language      string `json:"language"`
+	UserID   int    `json:"userId,omitempty"`
+	Theme    string `json:"theme,omitempty"`
+	Language string `json:"language,omitempty"`
 }
 
 type ErrorResponse struct {
