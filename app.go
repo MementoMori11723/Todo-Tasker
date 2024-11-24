@@ -9,7 +9,10 @@ import (
 )
 
 func main() {
-  PORT := flag.String("port", "8000", "Port to run the server on")
+  PORT := flag.String(
+    "port", "8000", 
+    "Port to run the server on",
+  )
   flag.Parse()
 	go func() {
 		server := server.New()

@@ -9,10 +9,12 @@ import (
 )
 
 var (
-	dbPath     = "todo.db"
-	todosQuery = "CREATE TABLE todos (id INTEGER PRIMARY KEY, user_id INTEGER, task TEXT, description TEXT, labels TEXT);"
-	usersQuery = "CREATE TABLE users (id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, username TEXT, email TEXT, password TEXT, image TEXT);"
-	apiRoutes  = map[string]func(http.ResponseWriter, *http.Request){
+	dbPath           = "todo.db"
+	walMode          = "PRAGMA journal_mode=WAL;"
+	todosQuery       = "CREATE TABLE todos (id INTEGER PRIMARY KEY, user_id INTEGER, task TEXT, description TEXT, labels TEXT, status TEXT, start_time TEXT, end_time TEXT, image TEXT);"
+	usersQuery       = "CREATE TABLE users (id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, username TEXT, email TEXT, password TEXT, image TEXT);"
+	preferencesQuery = "CREATE TABLE preferences (user_id INTEGER PRIMARY KEY, theme TEXT, language TEXT);"
+	apiRoutes        = map[string]func(http.ResponseWriter, *http.Request){
 		"GET /":    getTodos,
 		"POST /":   createTodo,
 		"PUT /":    updateTodo,
@@ -26,6 +28,10 @@ type Todo struct {
 	Task        string   `json:"task"`
 	Description string   `json:"description"`
 	Labels      []string `json:"labels"`
+	Status      string   `json:"status"`
+	StartTime   string   `json:"startTime"`
+	EndTime     string   `json:"endTime"`
+	Image       string   `json:"image"`
 }
 
 type User struct {
@@ -38,6 +44,12 @@ type User struct {
 	Image     string `json:"image"`
 }
 
+type Preferences struct {
+	UserID        int    `json:"userId"`
+	Theme         string `json:"theme"`
+	Language      string `json:"language"`
+}
+
 type ErrorResponse struct {
 	Error      string `json:"error"`
 	StatusCode int    `json:"statusCode"`
@@ -48,6 +60,12 @@ func init() {
 		os.Create(dbPath)
 		db := connect()
 		defer db.Close()
+		_, err = db.Exec(
+			walMode,
+		)
+		if err != nil {
+			panic(err)
+		}
 		_, err := db.Exec(
 			todosQuery,
 		)
@@ -56,6 +74,12 @@ func init() {
 		}
 		_, err = db.Exec(
 			usersQuery,
+		)
+		if err != nil {
+			panic(err)
+		}
+		_, err = db.Exec(
+			preferencesQuery,
 		)
 		if err != nil {
 			panic(err)
