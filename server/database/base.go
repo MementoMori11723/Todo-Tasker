@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"encoding/json"
 	"net/http"
 	"os"
 
@@ -28,9 +29,9 @@ var (
 		"PUT /users":      updateUser,
 		"DELETE /users":   deleteUser,
 
-		"GET /preferences":  getPreferences,
-		"POST /preferences": createPreferences,
-		"PUT /preferences":  updatePreferences,
+		"GET /preferences/{id}": getPreferences,
+		"POST /preferences":     createPreferences,
+		"PUT /preferences":      updatePreferences,
 	}
 )
 
@@ -101,6 +102,15 @@ func init() {
 			panic(err)
 		}
 	}
+}
+
+func errorFunction(w http.ResponseWriter, err error, status int) {
+  w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(ErrorResponse{
+		Error:      err.Error(),
+		StatusCode: status,
+	})
 }
 
 func connect() *sql.DB {
