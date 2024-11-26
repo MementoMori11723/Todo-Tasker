@@ -32,6 +32,7 @@ var (
 		"GET /preferences/{id}": getPreferences,
 		"POST /preferences":     createPreferences,
 		"PUT /preferences":      updatePreferences,
+    "DELETE /preferences":   deletePreferences,
 	}
 )
 
