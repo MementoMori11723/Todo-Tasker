@@ -31,7 +31,7 @@ func getTodos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	query := "SELECT * FROM todos"
+	query := "SELECT id, task, status, user_id, description, start_time, end_time, image, labels FROM todos"
 	var todo Todo
 	err := getDataFromDB(
 		query,
@@ -66,7 +66,7 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	query := "SELECT * FROM users"
+	query := "SELECT id, first_name, last_name, username, email, password, image FROM users"
 	var user User
 	err := getDataFromDB(
 		query,
@@ -95,7 +95,7 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 
 func getUserByID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	query := "SELECT * FROM users WHERE id = " + r.PathValue("id") + ";"
+	query := "SELECT id, first_name, last_name, username, email, password, image FROM users WHERE id = " + r.PathValue("id") + ";"
 	var user User
 	err := getDataFromDB(
 		query,
@@ -124,7 +124,7 @@ func getUserByID(w http.ResponseWriter, r *http.Request) {
 
 func getPreferences(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	query := "SELECT * FROM preferences WHERE user_id = " + r.PathValue("id") + ";"
+	query := "SELECT user_id, theme, language FROM preferences WHERE user_id = " + r.PathValue("id") + ";"
 	var preference Preferences
 	err := getDataFromDB(
 		query,
@@ -149,7 +149,7 @@ func getPreferences(w http.ResponseWriter, r *http.Request) {
 
 func getTodoByID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	query := "SELECT * FROM todos WHERE id = " + r.PathValue("id") + ";"
+	query := "SELECT id, task, status, user_id, description, start_time, end_time, image, labels FROM todos WHERE id = " + r.PathValue("id") + ";"
 	var todo Todo
 	err := getDataFromDB(
 		query,
