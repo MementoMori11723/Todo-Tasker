@@ -28,6 +28,10 @@ func updateTodo(w http.ResponseWriter, r *http.Request) {
 		errorFunction(w, err, http.StatusBadRequest)
 		return
 	}
+  if todo.ID == 0 {
+    errorFunction(w, errors.New("Please provide a valid ID"), http.StatusBadRequest)
+    return
+  }
 	err = updateDataInDB(
 		query,
 		todo.Task,
@@ -59,6 +63,10 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 		errorFunction(w, err, http.StatusBadRequest)
 		return
 	}
+  if user.ID == 0 {
+    errorFunction(w, errors.New("Please provide a valid ID"), http.StatusBadRequest)
+    return
+  }
 	err = updateDataInDB(
 		query,
 		user.FirstName,
@@ -88,6 +96,10 @@ func updatePreferences(w http.ResponseWriter, r *http.Request) {
 		errorFunction(w, err, http.StatusBadRequest)
 		return
 	}
+  if preferences.UserID == 0 {
+    errorFunction(w, errors.New("Please provide a valid ID"), http.StatusBadRequest)
+    return
+  }
 	err = updateDataInDB(
 		query,
 		preferences.Language,

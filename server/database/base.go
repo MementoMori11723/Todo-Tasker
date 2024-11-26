@@ -12,9 +12,9 @@ import (
 var (
 	dbPath           = "todo.db"
 	walMode          = "PRAGMA journal_mode=WAL;"
-	todosQuery       = "CREATE TABLE todos (id INTEGER PRIMARY KEY, user_id INTEGER, task TEXT, description TEXT, labels TEXT, status TEXT, start_time TEXT, end_time TEXT, image TEXT);"
-	usersQuery       = "CREATE TABLE users (id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, username TEXT, email TEXT, password TEXT, image TEXT);"
-	preferencesQuery = "CREATE TABLE preferences (user_id INTEGER PRIMARY KEY, theme TEXT, language TEXT);"
+	todosQuery       = "CREATE TABLE todos (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, task TEXT NOT NULL, description TEXT NOT NULL, labels TEXT, status TEXT NOT NULL, start_time TEXT, end_time TEXT, image TEXT);"
+	usersQuery       = "CREATE TABLE users (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, username TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, image TEXT);"
+	preferencesQuery = "CREATE TABLE preferences (user_id INTEGER PRIMARY KEY, theme TEXT DEFAULT 'light', language TEXT DEFAULT 'en');"
 
 	apiRoutes = map[string]func(http.ResponseWriter, *http.Request){
 		"GET /todos":      getTodos,

@@ -6,25 +6,6 @@ import (
 	"net/http"
 )
 
-func getDataFromDB(query string, data ...any) error {
-	db := connect()
-	defer db.Close()
-
-	rows, err := db.Query(query)
-	if err != nil {
-		return err
-	}
-
-	defer rows.Close()
-	for rows.Next() {
-		err := rows.Scan(data...)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 func getTodos(w http.ResponseWriter, r *http.Request) {
 	if r.Header.Get("Authorization") == "" || r.Header.Get("Authorization") != "Bearer token" {
 		errorFunction(w, errors.New("Unauthorized"), http.StatusUnauthorized)
@@ -32,29 +13,39 @@ func getTodos(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	query := "SELECT id, task, status, user_id, description, start_time, end_time, image, labels FROM todos"
-	var todo Todo
-	err := getDataFromDB(
-		query,
-		&todo.ID,
-		&todo.Task,
-		&todo.Status,
-		&todo.UserID,
-		&todo.Description,
-		&todo.StartTime,
-		&todo.EndTime,
-		&todo.Image,
-		&todo.Labels,
-	)
+	var todos []Todo
+  db := connect()	
+  defer db.Close()
+  rows, err := db.Query(query)
+  for rows.Next() {
+    var todo Todo
+    err := rows.Scan(
+      &todo.ID, 
+      &todo.Task, 
+      &todo.Status, 
+      &todo.UserID, 
+      &todo.Description, 
+      &todo.StartTime, 
+      &todo.EndTime, 
+      &todo.Image, 
+      &todo.Labels,
+    )
+    if err != nil {
+      errorFunction(w, err, http.StatusInternalServerError)
+      return
+    }
+    todos = append(todos, todo)
+  }
 	if err != nil {
 		errorFunction(w, err, http.StatusInternalServerError)
 		return
 	}
-	if todo.ID == 0 {
+	if todos[0].ID == 0 {
 		errorFunction(w, errors.New("No Todos Found!"), http.StatusNotFound)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(todo); err != nil {
+	if err := json.NewEncoder(w).Encode(todos); err != nil {
 		errorFunction(w, err, http.StatusInternalServerError)
 		return
 	}
@@ -67,27 +58,37 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	query := "SELECT id, first_name, last_name, username, email, password, image FROM users"
-	var user User
-	err := getDataFromDB(
-		query,
-		&user.ID,
-		&user.Email,
-		&user.Password,
-		&user.Image,
-		&user.LastName,
-		&user.Username,
-		&user.FirstName,
-	)
+	var users []User
+  db := connect()
+  defer db.Close()
+  rows, err := db.Query(query)
+  for rows.Next() {
+    var user User
+    err := rows.Scan(
+      &user.ID, 
+      &user.FirstName, 
+      &user.LastName, 
+      &user.Username, 
+      &user.Email, 
+      &user.Password, 
+      &user.Image,
+    )
+    if err != nil {
+      errorFunction(w, err, http.StatusInternalServerError)
+      return
+    }
+    users = append(users, user)
+  }
 	if err != nil {
 		errorFunction(w, err, http.StatusInternalServerError)
 		return
 	}
-	if user.ID == 0 {
+	if users[0].ID == 0 {
 		errorFunction(w, errors.New("No User Found!"), http.StatusNotFound)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(user); err != nil {
+	if err := json.NewEncoder(w).Encode(users); err != nil {
 		errorFunction(w, err, http.StatusInternalServerError)
 		return
 	}
@@ -97,16 +98,17 @@ func getUserByID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	query := "SELECT id, first_name, last_name, username, email, password, image FROM users WHERE id = " + r.PathValue("id") + ";"
 	var user User
-	err := getDataFromDB(
-		query,
-		&user.ID,
-		&user.Email,
-		&user.Password,
-		&user.Image,
-		&user.LastName,
-		&user.Username,
-		&user.FirstName,
-	)
+  db := connect()
+  defer db.Close()
+  err := db.QueryRow(query).Scan(
+    &user.ID, 
+    &user.FirstName, 
+    &user.LastName, 
+    &user.Username, 
+    &user.Email, 
+    &user.Password, 
+    &user.Image,
+  )
 	if err != nil {
 		errorFunction(w, err, http.StatusInternalServerError)
 		return
@@ -126,8 +128,8 @@ func getPreferences(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	query := "SELECT user_id, theme, language FROM preferences WHERE user_id = " + r.PathValue("id") + ";"
 	var preference Preferences
-	err := getDataFromDB(
-		query,
+  db := connect()
+	err := db.QueryRow(query).Scan(
 		&preference.UserID,
 		&preference.Theme,
 		&preference.Language,
@@ -151,8 +153,8 @@ func getTodoByID(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	query := "SELECT id, task, status, user_id, description, start_time, end_time, image, labels FROM todos WHERE id = " + r.PathValue("id") + ";"
 	var todo Todo
-	err := getDataFromDB(
-		query,
+  db := connect()
+	err := db.QueryRow(query).Scan(
 		&todo.ID,
 		&todo.Task,
 		&todo.Status,
