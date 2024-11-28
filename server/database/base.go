@@ -12,9 +12,10 @@ import (
 var (
 	dbPath           = "todo.db"
 	walMode          = "PRAGMA journal_mode=WAL;"
-	todosQuery       = "CREATE TABLE todos (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, task TEXT NOT NULL, description TEXT NOT NULL, labels TEXT, status TEXT NOT NULL, start_time TEXT, end_time TEXT, image TEXT);"
+	todosQuery       = "CREATE TABLE todos (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, task TEXT NOT NULL, description TEXT NOT NULL, labels TEXT, status TEXT NOT NULL, start_time TEXT, end_time TEXT, image TEXT, group TEXT);"
 	usersQuery       = "CREATE TABLE users (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL, last_name TEXT NOT NULL, username TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, image TEXT);"
-	preferencesQuery = "CREATE TABLE preferences (user_id INTEGER PRIMARY KEY, theme TEXT DEFAULT 'light', language TEXT DEFAULT 'en');"
+	preferencesQuery = "CREATE TABLE preferences (user_id INTEGER PRIMARY KEY, theme BOOLEAN, language TEXT, font_size INTEGER, font_family TEXT);"
+  adminQuery       = "CREATE TABLE admin (id INTEGER PRIMARY KEY, username TEXT NOT NULL, password TEXT NOT NULL);"
 
 	apiRoutes = map[string]func(http.ResponseWriter, *http.Request){
 		"GET /todos":      getTodos,
@@ -32,7 +33,7 @@ var (
 		"GET /preferences/{id}": getPreferences,
 		"POST /preferences":     createPreferences,
 		"PUT /preferences":      updatePreferences,
-    "DELETE /preferences":   deletePreferences,
+		"DELETE /preferences":   deletePreferences,
 	}
 )
 
@@ -46,6 +47,7 @@ type Todo struct {
 	StartTime   string   `json:"startTime,omitempty"`
 	EndTime     string   `json:"endTime,omitempty"`
 	Image       string   `json:"image,omitempty"`
+  Group       string   `json:"group,omitempty"`
 }
 
 type User struct {
@@ -59,9 +61,17 @@ type User struct {
 }
 
 type Preferences struct {
-	UserID   int    `json:"userId,omitempty"`
-	Theme    string `json:"theme,omitempty"`
-	Language string `json:"language,omitempty"`
+	UserID     int    `json:"userId,omitempty"`
+	Theme      bool   `json:"theme,omitempty"`
+	Language   string `json:"language,omitempty"`
+	FontSize   int    `json:"fontSize,omitempty"`
+	FontFamily string `json:"fontFamily,omitempty"`
+}
+
+type Admin struct {
+	Id       int    `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 type ErrorResponse struct {
@@ -106,7 +116,7 @@ func init() {
 }
 
 func errorFunction(w http.ResponseWriter, err error, status int) {
-  w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(ErrorResponse{
 		Error:      err.Error(),
