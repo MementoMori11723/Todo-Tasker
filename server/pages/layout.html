@@ -1,17 +1,115 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" x-data="{ theme: $persist('dark') }" :data-theme="theme">
 
 <head>
+  <!-- Meta Data -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico?" />
-  <title>{{template "title" .}}</title>
-  {{block "header" .}}{{end}}
+  <meta name="description" content="A simple website served on the dark web" />
+  <meta name="keywords" content="dark web, anonymous, privacy, onion network" />
+  <meta name="author" content="John Doe" />
+  <title>{{ template "title" .}}</title>
+  <link rel="icon" href="/assets/tor.png" />
+
+  <!-- dns prefetch -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
+  <!-- Pico CSS -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link prefetch rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+
+  <!-- Custom Code -->
+  <style></style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+    });
+
+    const data = {
+      mobileView: window.matchMedia("(width < 700px)").matches,
+      showSidebar: false,
+      updateNavbar() {
+        window
+          .matchMedia("(width < 700px)")
+          .addEventListener("change", (e) => (this.mobileView = e.matches));
+      },
+    };
+  </script>
 </head>
 
-<body>
-  {{template "content" .}}
+<body x-data="data" x-init="updateNavbar()">
+  <!-- Navbar -->
+  <nav class="container-fluid" id="navbar">
+    <ul>
+      <li id="logo">
+        <a href="/">The Dark Web</a>
+      </li>
+    </ul>
+    <template x-if="mobileView">
+      <ul>
+        <li>
+          <button class="outline" style="border: none" @click="showSidebar = !showSidebar">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+        </li>
+      </ul>
+    </template>
+    <template x-if="!mobileView">{{ template "links" .}}</template>
+  </nav>
+
+  <!-- Sidebar -->
+  <dialog id="sidebar" :open="showSidebar" @click="showSidebar = !showSidebar">
+    <nav>
+      <aside>{{ template "links" .}}</aside>
+    </nav>
+  </dialog>
+
+  <!-- Main -->
+  <main class="container">{{ template "main" .}}</main>
+
+  <!-- Footer -->
+  <footer class="container" style="text-align: center">
+    <p>&copy; Hidden Service — Privacy is Freedom — Stay safe</p>
+  </footer>
+
+  <!-- Alpine.js Plugins -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 
 </html>
+
+<!-- Links for sections and toggle -->
+{{define "links"}}
+<ul>
+  <li>
+    <a href="/#"><b>Home</b></a>
+  </li>
+  <li>
+    <a href="/#history"><b>History</b></a>
+  </li>
+  <li>
+    <a href="/#safties"><b>Safties</b></a>
+  </li>
+  <li>
+    <a href="/#about"><b>About</b></a>
+  </li>
+  <li>
+    <button class="mode" @click="$data.theme = ($data.theme === 'light') ? 'dark' : 'light'">
+      <b x-text="($data.theme === 'light') ? 'Dark mode' : 'Light mode'"></b>
+    </button>
+  </li>
+</ul>
+{{end}}
