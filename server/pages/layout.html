@@ -1,115 +1,149 @@
 <!doctype html>
-<html lang="en" x-data="{ theme: $persist('dark') }" :data-theme="theme">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com/" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'nonce-a23gbfz9e'"
+    />
 
-<head>
-  <!-- Meta Data -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A simple website served on the dark web" />
-  <meta name="keywords" content="dark web, anonymous, privacy, onion network" />
-  <meta name="author" content="John Doe" />
-  <title>{{ template "title" .}}</title>
-  <link rel="icon" href="/assets/tor.png" />
+    <!-- Basic Meta Tags -->
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
 
-  <!-- dns prefetch -->
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
 
-  <!-- Pico CSS -->
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link prefetch rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image" content="" />
 
-  <!-- Custom Code -->
-  <style></style>
+    <title>Todo tasker</title>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const navbar = document.getElementById("navbar");
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 50) {
-          navbar.classList.add("scrolled");
-        } else {
-          navbar.classList.remove("scrolled");
-        }
-      });
-    });
+    <!-- Charts.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
 
-    const data = {
-      mobileView: window.matchMedia("(width < 700px)").matches,
-      showSidebar: false,
-      updateNavbar() {
-        window
-          .matchMedia("(width < 700px)")
-          .addEventListener("change", (e) => (this.mobileView = e.matches));
-      },
-    };
-  </script>
-</head>
+    <!-- D3.js -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 
-<body x-data="data" x-init="updateNavbar()">
-  <!-- Navbar -->
-  <nav class="container-fluid" id="navbar">
-    <ul>
-      <li id="logo">
-        <a href="/">The Dark Web</a>
-      </li>
-    </ul>
-    <template x-if="mobileView">
-      <ul>
-        <li>
-          <button class="outline" style="border: none" @click="showSidebar = !showSidebar">
-            <span class="material-symbols-outlined">menu</span>
-          </button>
-        </li>
-      </ul>
-    </template>
-    <template x-if="!mobileView">{{ template "links" .}}</template>
-  </nav>
+    <!-- Daisy ui -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
 
-  <!-- Sidebar -->
-  <dialog id="sidebar" :open="showSidebar" @click="showSidebar = !showSidebar">
-    <nav>
-      <aside>{{ template "links" .}}</aside>
-    </nav>
-  </dialog>
+    <!-- Tailwind css -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-  <!-- Main -->
-  <main class="container">{{ template "main" .}}</main>
+    <!-- Tabler icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+    />
 
-  <!-- Footer -->
-  <footer class="container" style="text-align: center">
-    <p>&copy; Hidden Service — Privacy is Freedom — Stay safe</p>
-  </footer>
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dongle&family=Hepta+Slab:wght@1..900&family=Playwrite+US+Modern:wght@100..400&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Alpine.js Plugins -->
-  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <!-- Alpine Plugins -->
+    <!-- Persist -->
+    <script
+      defer
+      nonce="a23gbfz9e"
+      src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"
+    ></script>
 
-  <!-- Alpine.js -->
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</body>
+    <!-- Mask -->
+    <script
+      defer
+      nonce="a23gbfz9e"
+      src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"
+    ></script>
 
+    <!-- Resize -->
+    <script
+      defer
+      nonce="a23gbfz9e"
+      src="https://cdn.jsdelivr.net/npm/@alpinejs/resize@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- Collapse -->
+    <script
+      defer
+      nonce="a23gbfz9e"
+      src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- Anchor -->
+    <script
+      defer
+      nonce="a23gbfz9e"
+      src="https://cdn.jsdelivr.net/npm/@alpinejs/anchor@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- Alpinejs -->
+    <script
+      defer
+      nonce="a23gbfz9e"
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <style>
+      @import "tailwindcss";
+
+      @plugin "daisyui/theme" {
+        name: "light";
+        default: true;
+        prefersdark: false;
+        color-scheme: "light";
+        --color-base-100: oklch(100% 0 0);
+        --color-base-200: oklch(98% 0 0);
+        --color-base-300: oklch(95% 0 0);
+        --color-base-content: oklch(21% 0.006 285.885);
+        --color-primary: oklch(62% 0.214 259.815);
+        --color-primary-content: oklch(28% 0.091 267.935);
+        --color-secondary: oklch(49% 0.27 292.581);
+        --color-secondary-content: oklch(81% 0.111 293.571);
+        --color-accent: oklch(93% 0.034 272.788);
+        --color-accent-content: oklch(38% 0.063 188.416);
+        --color-neutral: oklch(14% 0.005 285.823);
+        --color-neutral-content: oklch(92% 0.004 286.32);
+        --color-info: oklch(95% 0.026 236.824);
+        --color-info-content: oklch(29% 0.066 243.157);
+        --color-success: oklch(84% 0.143 164.978);
+        --color-success-content: oklch(37% 0.077 168.94);
+        --color-warning: oklch(87% 0.169 91.605);
+        --color-warning-content: oklch(41% 0.112 45.904);
+        --color-error: oklch(70% 0.191 22.216);
+        --color-error-content: oklch(27% 0.105 12.094);
+        --radius-selector: 0.5rem;
+        --radius-field: 0.5rem;
+        --radius-box: 0.5rem;
+        --size-selector: 0.25rem;
+        --size-field: 0.25rem;
+        --border: 1px;
+        --depth: 1;
+        --noise: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    {{template "main" .}}
+  </body>
 </html>
-
-<!-- Links for sections and toggle -->
-{{define "links"}}
-<ul>
-  <li>
-    <a href="/#"><b>Home</b></a>
-  </li>
-  <li>
-    <a href="/#history"><b>History</b></a>
-  </li>
-  <li>
-    <a href="/#safties"><b>Safties</b></a>
-  </li>
-  <li>
-    <a href="/#about"><b>About</b></a>
-  </li>
-  <li>
-    <button class="mode" @click="$data.theme = ($data.theme === 'light') ? 'dark' : 'light'">
-      <b x-text="($data.theme === 'light') ? 'Dark mode' : 'Light mode'"></b>
-    </button>
-  </li>
-</ul>
-{{end}}

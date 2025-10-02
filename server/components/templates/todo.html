@@ -1,0 +1,33 @@
+<!-- Todo list  -->
+{{define "todo-list"}}
+<section x-data="todo">
+  <ul>
+    <template x-for="(todo, index) in todos" :key="index">
+      <li :id="index">
+        <img :src="todo.img" :alt="todo.alt" />
+        <hgroup>
+          <h2 x-text="todo.title"></h2>
+          <p x-text="todo.details"></p>
+        </hgroup>
+        <div>
+          <button type="button"></button>
+          <input type="checkbox" />
+        </div>
+      </li>
+    </template>
+  </ul>
+  <dialog>{{template "todo-input" .}}</dialog>
+</section>
+{{end}}
+
+<!-- Todo input -->
+{{define "todo-input"}}
+<section>
+  <form action="/todo">
+    <img :src="todo.img" :alt="todo.alt" />
+    <input type="text" name="title" id="title" />
+    <textarea rows="50" cols="50"></textarea>
+    <button type="submit"></button>
+  </form>
+</section>
+{{end}}

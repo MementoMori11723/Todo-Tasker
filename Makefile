@@ -3,5 +3,5 @@ run:
 stop:
 	@docker-compose -f config/compose.yml -p todo-tasker down --remove-orphans
 dev:
-	@go run .
+	@PORT=8080 go run .
 
