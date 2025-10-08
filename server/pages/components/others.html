@@ -7,7 +7,29 @@
   <div>
     <a href="/#about">About</a>
     <a href="/dashboard">Dashboard</a>
+    <button type="button">Dark mode</button>
     <a href="/login">Login/Sign up</a>
+  </div>
+</section>
+{{end}}
+
+<!-- Footer Component -->
+{{define "footer"}}
+<section>
+  <div>
+    <!-- Will be in horizontal view. -->
+    <div>
+      <!-- About the project -->
+    </div>
+    <div>
+      <!-- Links to other features -->
+    </div>
+    <div>
+      <!-- contact us section -->
+    </div>
+  </div>
+  <div>
+    <!-- newsletter subscription -->
   </div>
 </section>
 {{end}}
@@ -25,17 +47,16 @@
 <div>
   <form action="/signup" method="post">
     <input type="text" name="first_name" placeholder="Enter your name" />
-    <input
-      type="text"
-      name="username"
-      placeholder="Enter your username or email"
-    />
+    <input type="text" name="username" placeholder="Enter your username or email" />
     <input type="password" name="password" placeholder="password" />
     <input type="password" name="confirm_password" placeholder="password" />
     <button type="submit">Sign up</button>
   </form>
   <span>or</span>
   <button type="button">Google login</button>
+  <br />
+  <span>or</span>
+  <button type="button">Login</button>
 </div>
 {{end}}
 
@@ -43,13 +64,13 @@
 {{define "login"}}
 <div>
   <form action="/login" method="post">
-    <input
-      type="text"
-      name="username"
-      placeholder="Enter your username or email"
-    />
+    <input type="text" name="username" placeholder="Enter your username or email" />
     <input type="password" name="password" placeholder="password" />
+    <button type="submit">Login</button>
   </form>
   <button type="button">Google login</button>
+  <br />
+  <span>or</span>
+  <button type="button">Sign up</button>
 </div>
 {{end}}
